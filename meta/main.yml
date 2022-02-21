@@ -1,8 +1,4 @@
 ---
-dependencies:
-  - darexsu.php
-  - darexsu.nginx
-
 galaxy_info:
   author: "darexsu"
   role_name: "zabbix_gui"
