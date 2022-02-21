@@ -5,7 +5,7 @@ galaxy_info:
   description: "install and configure zabbix frontend"
   company: ""
   license: "license (MIT)"
-  min_ansible_version: 2.10
+  min_ansible_version: 2.9
   platforms:
     - name: Debian
       versions:
