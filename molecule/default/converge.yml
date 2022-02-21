@@ -1,0 +1,52 @@
+---
+- name: Converge
+  hosts: all
+
+  vars:
+    merge:
+# Zabbix-GUI --------     
+      zabbix_gui:
+        enabled: true
+        version: "6.0"
+        server_name: "Zabbix server"  
+        db_type: "MYSQL"
+        db_port: "3306"
+        db_name: "zabbix"
+        db_user: "zabbix"
+        db_password: "change_me"
+      zabbix_gui_install:
+        enabled: true
+      zabbix_gui_repo:
+        enabled: true
+      zabbix_gui_config:
+        enabled: true
+# PHP --------------
+      php:
+        enabled: true
+        version: "7.4"
+      php_repo:
+        enabled: true
+      php_install:
+        enabled: true
+      php_fpm: 
+        enabled: true
+        vars:
+          date_timezone: "Europe/Moscow" 
+          unix_socket:
+            enabled: true
+# Nginx ------------
+      nginx:
+        enabled: true
+      nginx_repo:
+        enabled: true
+      nginx_install:
+        enabled: true
+      nginx_conf:
+        enabled: true
+      nginx_virtualhost: 
+        enabled: true
+
+  tasks:
+  - name: include role darexsu.zabbix_gui
+    include_role: 
+      name: darexsu.zabbix_gui

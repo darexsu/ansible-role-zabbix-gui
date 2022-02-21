@@ -1,0 +1,38 @@
+--- 
+- name: merge dictionaries
+  block:
+  - name: register default vars
+    include_vars: 
+      file: ../../darexsu.zabbix_gui/defaults/main.yml
+      name: zabbix_gui_default_vars
+  
+  - name: merge default and new dictionaries 
+    set_fact:
+      "{{ item.key }}": "{{ zabbix_gui_default_vars[item.key] | combine(merge[item.key], recursive=True)}}"
+    when: zabbix_gui_default_vars[item.key] is defined
+    with_dict: "{{ merge }}"
+
+  - name: combine defaults vars with merge dictionary
+    set_fact:
+      merge: "{{ zabbix_gui_default_vars | combine(merge, recursive=True)}}"
+  when: merge is defined
+
+- name: zabbix_gui role is disabled
+  meta: end_play
+  when: not zabbix_gui.enabled
+
+- name: include zabbix_gui install
+  include_tasks: ./tasks/install/zabbix_gui_install__{{ ansible_os_family | lower }}.yml
+  when: zabbix_gui_install.enabled
+
+- name: include zabbix_gui config
+  include_tasks: ./tasks/config/zabbix_gui_config__{{ ansible_os_family | lower }}.yml
+  when: zabbix_gui_config.enabled
+
+- name: include php tasks
+  include_tasks: ./tasks/php/zabbix_gui_php.yml
+  when: php.enabled
+    
+- name: include nginx tasks
+  include_tasks: ./tasks/nginx/zabbix_gui_nginx.yml
+  when: nginx.enabled

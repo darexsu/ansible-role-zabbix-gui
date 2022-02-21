@@ -1,0 +1,164 @@
+---
+# zabbix_gui
+#   |   ├── install
+#   |   |    ├── repo
+#   |   |    ├── packages
+#   |   |    └── dependencies
+#   |   └── config
+#   |        └── server.cnf
+# php {version} 
+#   |   ├── install
+#   |   |    ├── packages
+#   |   |    ├── repo
+#   |   |    └── dependencies
+#   |   └── config
+#   |        └── php.ini
+#   |        └── php-fpm
+#   |              ├── tcp\ip socket
+#   |              └── unix socket
+# nginx
+#   ├── install
+#   |    ├── packages
+#   |    ├── dependencies
+#   |    └── repositories
+#   └── config
+#        ├── nginx.conf
+#        └── virtualhost.conf
+#              ├── tcp\ip socket
+#              └── unix socket
+
+# zabbix_gui -> global
+zabbix_gui:
+  enabled: false
+  version: "6.0"
+  server_name: "Zabbix server"  
+  db_type: "MYSQL"
+  db_port: "3306"
+  db_server: "localhost"
+  db_name: "zabbix"
+  db_user: "zabbix"
+  db_password: "change_me"
+  
+
+# zabbix_gui -> repo
+zabbix_gui_repo:
+  enabled: true
+  zabbix:
+    deb: "deb http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
+    deb_key: "http://repo.zabbix.com/zabbix-official-repo.key"
+    rpm: "http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_gui.version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
+    rpm_key: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591"
+
+# zabbix_gui -> install
+zabbix_gui_install:
+  enabled: false
+  packages:
+    debian: [zabbix-frontend-php]
+    redhat: [zabbix-web-mysql]
+  dependencies:
+    debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
+    redhat: []
+
+# zabbix_gui -> config
+zabbix_gui_config:
+  enabled: false
+  file: "zabbix.conf.php"
+  src: "zabbix_gui__zabbix.conf.php.j2"
+  path:
+    debian: "/etc/zabbix/web/"
+    redhat: "/etc/zabbix/web/"
+  backup: false
+  vars:
+    db_type: "{{ zabbix_gui.db_type }}"
+    db_server: "{{ zabbix_gui.db_server }}"
+    db_port: "{{ zabbix_gui.db_port }}"
+    db_database: "{{ zabbix_gui.db_name }}"
+    db_user: "{{ zabbix_gui.db_user }}"
+    db_password: "{{ zabbix_gui.db_password }}"
+    db_schema: ""
+    db_encryption: "false"
+    db_key_file: ""
+    db_cert_file: ""
+    db_ca_file: ""
+    db_verify_host: "false"
+    db_sypher_list: ""
+    db_vault_url: ""
+    db_vault_db_path: ""
+    db_vault_token: ""
+    db_double_ieee754: "true"
+    zbx_server_name: "{{ zabbix_gui.server_name }}"
+    image_format_default: "IMAGE_FORMAT_PNG"
+
+# php -> global
+php:
+  version: "7.4"
+
+# php -> repo 
+php_repo:
+  enabled: false
+
+# php -> install
+php_install:
+  enabled: false
+  packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
+
+# php -> config -> php-fpm
+php_fpm: 
+  enabled: false
+  file: "zabbix.conf"
+  state: "present"
+  src: "../../darexsu.zabbix_gui/templates/zabbix_gui__php.j2"
+  backup: false
+  remove_default: true
+  vars:
+    webserver_user: "www-data"
+    webserver_group: "www-data"
+    pm: "dynamic"
+    pm_max_children: "50"
+    pm_start_servers: "5"
+    pm_min_spare_servers: "5"
+    pm_max_spare_servers: "35"
+    date_timezone: "Europe/Moscow" 
+    unix_socket:
+      enabled: true
+      file: "php{{ php.version }}-fpm-zabbix.sock"
+      user: "www-data"
+      group: "www-data"
+
+# nginx -> global
+nginx:
+  enabled: false
+
+# nginx -> repo
+nginx_repo:
+  enabled: false
+
+# nginx -> install
+nginx_install:
+  enabled: true
+  
+# nginx -> config -> nginx.conf
+nginx_conf:
+  enabled: false
+  vars:
+    user: "www-data"
+
+# nginx -> config -> {virtualhost}.conf
+nginx_virtualhost: 
+  enabled: false
+  file: "zabbix_gui.conf"
+  state: "present"
+  src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
+  backup: false
+  remove_default: true
+  vars:
+    listen_port: "80"
+    listen_ipv6: false
+    server_name: "localhost"
+    root: "/usr/share/zabbix/"
+    php_fpm:
+      unix_socket:
+        enabled: true
+        file: "php{{ php.version }}-fpm-zabbix.sock"
+        user: "www-data"
+        group: "www-data"

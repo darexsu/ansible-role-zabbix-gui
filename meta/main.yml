@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  author: "darexsu"
+  role_name: "zabbix_gui"
+  description: "install and configure zabbix frontend"
+  company: ""
+  license: "license (MIT)"
+  min_ansible_version: 2.10
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+    - name: Ubuntu
+      versions:
+        - xenial
+        - focal
+    - name: EL
+      versions:
+        - 7
+        - 8
+  galaxy_tags:
+    - monitoring
+    - zabbix

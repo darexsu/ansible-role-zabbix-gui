@@ -1,0 +1,27 @@
+---
+- name: ensure dependencies are installed.
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ zabbix_gui_install.dependencies.redhat }}"
+
+- name: add zabbix repo
+  block:
+    - name: add zabbix repository gpg key
+      ansible.builtin.rpm_key:
+        key: "{{ zabbix_gui_repo.zabbix.rpm_key }}"
+        state: present
+
+    - name: add zabbix repository
+      ansible.builtin.package:
+        name: "{{ zabbix_gui_repo.zabbix.rpm }}"
+        state: present
+  when: zabbix_gui_repo.enabled
+
+- name: install zabbix packages.
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ zabbix_gui_install.packages.redhat }}"
