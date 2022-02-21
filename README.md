@@ -7,10 +7,7 @@
 | Distro release   |  10, 11            | 18.04, 20.04    |       8       |      8       |
 | Zabbix version   |  6.0 LTS           |   6.0 LTS       |    6.0 LTS    |  6.0 LTS     |             
                                           
-### Zabbix Roles:
-[Zabbix-server role](https://github.com/darexsu/ansible-role-zabbix-server/)
-[Zabbix-agent role](https://github.com/darexsu/ansible-role-zabbix-agent/)
-[Zabbix-GUI role](https://github.com/darexsu/ansible-role-zabbix-gui/)
+Zabbix Roles: [zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)    
 
 ### 1) Install role from Galaxy
 ```
