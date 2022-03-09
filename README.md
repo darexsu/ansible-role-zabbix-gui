@@ -24,7 +24,7 @@ ansible-galaxy install darexsu.nginx --force
     - install
       - [Zabbix-GUI](#install-zabbix-gui)     
     - config
-      - [zabbix.conf.php](#configure-zabbix-conf-php)
+      - [zabbix.conf.php](#configure-zabbixconfphp)
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
