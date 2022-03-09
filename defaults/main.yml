@@ -68,14 +68,20 @@ zabbix_gui_const:
 
 # PHP
 php:
-  enabled: true
+  enabled: false
   version: "7.4"
   src: "third_party"
+  service:
+    enabled: true
+    state: "started"
 
 # PHP -> install
 php_install:
   enabled: false
   packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
+  dependencies:
+    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
+    RedHat: []
 
 # PHP -> config
 php_fpm:
@@ -116,12 +122,30 @@ nginx:
 nginx_install:
   enabled: false
   packages: [nginx]
+  dependencies:
+    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
+    RedHat: []
 
-# Nginx -> config
+# Nginx -> config -> nginx.conf
 nginx_conf:
   enabled: false
+  file: "nginx.conf"
+  src: "nginx__conf.j2"
+  backup: false
   vars:
     user: "www-data"
+    worker_processes: "auto"
+    error_log: "/var/log/nginx/error.log notice"
+    pidfile: "/var/run/nginx.pid"
+    worker_connections: "1024"
+    multi_accept: "off"
+    mime_file_path: "/etc/nginx/mime.types"
+    access_log: "/var/log/nginx/access.log"
+    sendfile: "off"
+    tcp_nopush: "off"
+    tcp_nodelay: "on"
+    keepalive_timeout: "75s"
+    keepalive_requests: "1000"
 
 # Nginx -> config -> virtualhost.conf
 nginx_virtualhost:
@@ -155,6 +179,12 @@ apache:
 # Apache -> install
 apache_install:
   enabled: false
+  packages:
+    Debian: [apache2]
+    RedHat: [httpd]
+  dependencies:
+    Debian: []
+    RedHat: []
 
 # Apache -> config -> virtualhost.conf
 apache_virtualhost:
