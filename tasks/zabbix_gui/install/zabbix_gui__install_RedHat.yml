@@ -4,24 +4,24 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.dependencies.redhat }}"
+  with_items: "{{ zabbix_gui_install.dependencies.RedHat }}"
 
 - name: add zabbix repo
   block:
     - name: add zabbix repository gpg key
       ansible.builtin.rpm_key:
-        key: "{{ zabbix_gui_repo.zabbix.rpm_key }}"
+        key: "{{ zabbix_gui_const[ansible_os_family]['gpg'] }}"
         state: present
 
     - name: add zabbix repository
       ansible.builtin.package:
-        name: "{{ zabbix_gui_repo.zabbix.rpm }}"
+        name: "{{ zabbix_gui_const[ansible_os_family]['repo'] }}"
         state: present
-  when: zabbix_gui_repo.enabled
+  when: zabbix_gui.src == "third_party"
 
 - name: install zabbix packages.
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.packages.redhat }}"
+  with_items: "{{ zabbix_gui_install.packages.RedHat }}"

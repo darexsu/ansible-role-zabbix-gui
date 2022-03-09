@@ -1,0 +1,20 @@
+---
+- name: ensure web-server user exsist
+  block:
+    - name: ensure web-server group exsist
+      ansible.builtin.group:
+        name: "{{ php_fpm['zabbix_conf']['vars']['webserver_group'] }}"
+
+    - name: ensure web-server user exsist
+      ansible.builtin.user:
+        name: "{{ php_fpm['zabbix_conf']['vars']['webserver_user'] }}"
+        group: "{{ php_fpm['zabbix_conf']['vars']['webserver_group'] }}"
+
+- name: configure zabbix_gui_config
+  ansible.builtin.template:
+    src: "{{ zabbix_gui_config.src }}"
+    dest: "{{ zabbix_gui_const[ansible_os_family]['config_path'] }}{{ zabbix_gui_config.file }}"
+    owner: "{{ php_fpm['zabbix_conf']['vars']['webserver_user'] }}"
+    group: "{{ php_fpm['zabbix_conf']['vars']['webserver_group'] }}"
+    mode: 0600
+    backup: "{{ zabbix_gui_config.backup }}"

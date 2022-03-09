@@ -4,24 +4,24 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.dependencies.debian }}"
+  with_items: "{{ zabbix_gui_install.dependencies.Debian }}"
 
 - name: add zabbix repo
   block:
     - name: add zabbix repository gpg key
       ansible.builtin.apt_key:
-        url: "{{ zabbix_gui_repo.zabbix.deb_key }}"
+        url: "{{ zabbix_gui_const[ansible_os_family]['gpg'] }}"
         state: present
 
     - name: add zabbix repository
       ansible.builtin.apt_repository:
-        repo: "{{ zabbix_gui_repo.zabbix.deb }}"
+        repo: "{{ zabbix_gui_const[ansible_os_family]['repo'] }}"
         state: present
-  when: zabbix_gui_repo.enabled
+  when: zabbix_gui.src == "third_party"
 
 - name: install zabbix packages.
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.packages.debian }}"
+  with_items: "{{ zabbix_gui_install.packages.Debian }}"

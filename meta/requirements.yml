@@ -2,3 +2,5 @@
 - name: darexsu.php
 
 - name: darexsu.nginx
+
+- name: darexsu.apache

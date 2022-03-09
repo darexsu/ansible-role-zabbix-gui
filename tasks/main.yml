@@ -1,12 +1,12 @@
---- 
+---
 - name: merge dictionaries
   block:
   - name: register default vars
-    include_vars: 
+    include_vars:
       file: ../../darexsu.zabbix_gui/defaults/main.yml
       name: zabbix_gui_default_vars
-  
-  - name: merge default and new dictionaries 
+
+  - name: merge default and new dictionaries
     set_fact:
       "{{ item.key }}": "{{ zabbix_gui_default_vars[item.key] | combine(merge[item.key], recursive=True)}}"
     when: zabbix_gui_default_vars[item.key] is defined
@@ -22,17 +22,21 @@
   when: not zabbix_gui.enabled
 
 - name: include zabbix_gui install
-  include_tasks: ./tasks/install/zabbix_gui_install__{{ ansible_os_family | lower }}.yml
+  include_tasks: ./tasks/zabbix_gui/install/zabbix_gui__install_{{ ansible_os_family }}.yml
   when: zabbix_gui_install.enabled
 
 - name: include zabbix_gui config
-  include_tasks: ./tasks/config/zabbix_gui_config__{{ ansible_os_family | lower }}.yml
+  include_tasks: ./tasks/zabbix_gui/config/zabbix_gui__config.yml
   when: zabbix_gui_config.enabled
 
 - name: include php tasks
-  include_tasks: ./tasks/php/zabbix_gui_php.yml
+  include_tasks: ./tasks/php/zabbix_gui__php.yml
   when: php.enabled
-    
+
+- name: include apache tasks
+  include_tasks: ./tasks/apache/zabbix_gui__apache.yml
+  when: apache.enabled
+
 - name: include nginx tasks
-  include_tasks: ./tasks/nginx/zabbix_gui_nginx.yml
+  include_tasks: ./tasks/nginx/zabbix_gui__nginx.yml
   when: nginx.enabled

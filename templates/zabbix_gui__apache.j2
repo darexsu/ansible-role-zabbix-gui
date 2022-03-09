@@ -1,0 +1,88 @@
+<VirtualHost {{ apache_virtualhost[item.key]["vars"]["ip"] | default(none) }}:{{ apache_virtualhost[item.key]["vars"]["port"] | default(none)}} >
+	{% if apache_virtualhost[item.key]["vars"]["ServerName"] is defined %}
+	ServerName {{ apache_virtualhost[item.key]["vars"]["ServerName"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["vars"]["ServerAdmin"] is defined %}
+	ServerAdmin {{ apache_virtualhost[item.key]["vars"]["ServerAdmin"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["vars"]["DocumentRoot"] is defined %}
+	DocumentRoot {{ apache_virtualhost[item.key]["vars"]["DocumentRoot"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["vars"]["ErrorLog"] is defined %}
+	ErrorLog {{ apache_virtualhost[item.key]["vars"]["ErrorLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["vars"]["CustomLog"] is defined %}
+	CustomLog {{ apache_virtualhost[item.key]["vars"]["CustomLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["vars"]["SSLEngine"] is defined and apache_virtualhost[item.key]["vars"]["SSLEngine"] -%}
+	SSLEngine {{ apache_virtualhost[item.key]["vars"]["SSLEngine"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["vars"]["SSLEngine"] is defined and apache_virtualhost[item.key]["vars"]["SSLEngine"] -%}
+	SSLCertificateFile	{{ apache_virtualhost[item.key]["vars"]["SSLCertificateFile"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["vars"]["SSLEngine"] is defined and apache_virtualhost[item.key]["vars"]["SSLEngine"] -%}
+	SSLCertificateKeyFile {{ apache_virtualhost[item.key]["vars"]["SSLCertificateKeyFile"] }}
+	{% endif -%}
+</VirtualHost>
+
+<Directory "/usr/share/zabbix">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+
+    <IfModule mod_php7.c>
+        php_value max_execution_time 300
+        php_value memory_limit 128M
+        php_value post_max_size 16M
+        php_value upload_max_filesize 2M
+        php_value max_input_time 300
+        php_value max_input_vars 10000
+        php_value always_populate_raw_post_data -1
+        php_value date.timezone {{ php_fpm[item.key]['vars']['date_timezone'] | default("Europe/Moscow") }}
+    </IfModule>
+</Directory>
+
+<Directory "/usr/share/zabbix/conf">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/app">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/include">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/local">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/vendor">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>

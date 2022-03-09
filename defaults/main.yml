@@ -1,72 +1,38 @@
 ---
-# zabbix_gui
-#   |   ├── install
-#   |   |    ├── repo
-#   |   |    ├── packages
-#   |   |    └── dependencies
-#   |   └── config
-#   |        └── server.cnf
-# php {version} 
-#   |   ├── install
-#   |   |    ├── packages
-#   |   |    ├── repo
-#   |   |    └── dependencies
-#   |   └── config
-#   |        └── php.ini
-#   |        └── php-fpm
-#   |              ├── tcp\ip socket
-#   |              └── unix socket
-# nginx
-#   ├── install
-#   |    ├── packages
-#   |    ├── dependencies
-#   |    └── repositories
-#   └── config
-#        ├── nginx.conf
-#        └── virtualhost.conf
-#              ├── tcp\ip socket
-#              └── unix socket
+# Zabbix_gui
+#     |
+#    PHP
+#    / \
+# Nginx Apache
 
-# zabbix_gui -> global
+# Zabbix_GUI
 zabbix_gui:
   enabled: false
+  src: "third_party"
   version: "6.0"
-  server_name: "Zabbix server"  
+  server_name: "Zabbix server"
   db_type: "MYSQL"
   db_port: "3306"
   db_server: "localhost"
   db_name: "zabbix"
   db_user: "zabbix"
   db_password: "change_me"
-  
 
-# zabbix_gui -> repo
-zabbix_gui_repo:
-  enabled: true
-  zabbix:
-    deb: "deb http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
-    deb_key: "http://repo.zabbix.com/zabbix-official-repo.key"
-    rpm: "http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_gui.version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
-    rpm_key: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591"
-
-# zabbix_gui -> install
+# Zabbix_GUI -> install
 zabbix_gui_install:
   enabled: false
   packages:
-    debian: [zabbix-frontend-php]
-    redhat: [zabbix-web-mysql]
+    Debian: [zabbix-frontend-php]
+    RedHat: [zabbix-web-mysql]
   dependencies:
-    debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-    redhat: []
+    Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
+    RedHat: []
 
-# zabbix_gui -> config
+# Zabbix_GUI -> config
 zabbix_gui_config:
   enabled: false
   file: "zabbix.conf.php"
   src: "zabbix_gui__zabbix.conf.php.j2"
-  path:
-    debian: "/etc/zabbix/web/"
-    redhat: "/etc/zabbix/web/"
   backup: false
   vars:
     db_type: "{{ zabbix_gui.db_type }}"
@@ -89,76 +55,118 @@ zabbix_gui_config:
     zbx_server_name: "{{ zabbix_gui.server_name }}"
     image_format_default: "IMAGE_FORMAT_PNG"
 
-# php -> global
+# Zabbix_GUI -> constants
+zabbix_gui_const:
+  Debian:
+    repo: "deb http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
+    gpg: "http://repo.zabbix.com/zabbix-official-repo.key"
+    config_path: "/etc/zabbix/web/"
+  RedHat:
+    repo: "http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_gui.version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
+    gpg: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591"
+    config_path: "/etc/zabbix/web/"
+
+# PHP
 php:
+  enabled: true
   version: "7.4"
+  src: "third_party"
 
-# php -> repo 
-php_repo:
-  enabled: false
-
-# php -> install
+# PHP -> install
 php_install:
   enabled: false
   packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
 
-# php -> config -> php-fpm
-php_fpm: 
-  enabled: false
-  file: "zabbix.conf"
-  state: "present"
-  src: "../../darexsu.zabbix_gui/templates/zabbix_gui__php.j2"
-  backup: false
-  remove_default: true
-  vars:
-    webserver_user: "www-data"
-    webserver_group: "www-data"
-    pm: "dynamic"
-    pm_max_children: "50"
-    pm_start_servers: "5"
-    pm_min_spare_servers: "5"
-    pm_max_spare_servers: "35"
-    date_timezone: "Europe/Moscow" 
-    unix_socket:
-      enabled: true
-      file: "php{{ php.version }}-fpm-zabbix.sock"
-      user: "www-data"
-      group: "www-data"
-
-# nginx -> global
-nginx:
-  enabled: false
-
-# nginx -> repo
-nginx_repo:
-  enabled: false
-
-# nginx -> install
-nginx_install:
-  enabled: true
-  
-# nginx -> config -> nginx.conf
-nginx_conf:
-  enabled: false
-  vars:
-    user: "www-data"
-
-# nginx -> config -> {virtualhost}.conf
-nginx_virtualhost: 
-  enabled: false
-  file: "zabbix_gui.conf"
-  state: "present"
-  src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
-  backup: false
-  remove_default: true
-  vars:
-    listen_port: "80"
-    listen_ipv6: false
-    server_name: "localhost"
-    root: "/usr/share/zabbix/"
-    php_fpm:
+# PHP -> config
+php_fpm:
+  zabbix_conf:
+    enabled: true
+    file: "zabbix.conf"
+    state: "present"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__php.j2"
+    backup: false
+    vars:
+      webserver_user: "www-data"
+      webserver_group: "www-data"
+      pm: "dynamic"
+      pm_max_children: "10"
+      pm_start_servers: "5"
+      pm_min_spare_servers: "5"
+      pm_max_spare_servers: "5"
+      pm_max_requests: "500"
+      date_timezone: "Europe/Moscow"
+      tcp_ip_socket:
+        enabled: false
+        listen: "127.0.0.1:9000"
       unix_socket:
         enabled: true
         file: "php{{ php.version }}-fpm-zabbix.sock"
         user: "www-data"
         group: "www-data"
+
+# Nginx
+nginx:
+  enabled: false
+  src: "distribution"
+  service:
+    enabled: true
+    state: "started"
+
+# Nginx -> install
+nginx_install:
+  enabled: false
+  packages: [nginx]
+
+# Nginx -> config
+nginx_conf:
+  enabled: false
+  vars:
+    user: "www-data"
+
+# Nginx -> config -> virtualhost.conf
+nginx_virtualhost:
+  zabbix_conf:
+    enabled: false
+    file: "zabbix.conf"
+    state: "present"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
+    backup: false
+    vars:
+      listen_port: "80"
+      listen_ipv6: false
+      server_name: "localhost"
+      root: "/usr/share/zabbix/"
+      access_log: false
+      error_log: false
+      tcp_ip_socket:
+        enabled: false
+        listen: "127.0.0.1:9000"
+      unix_socket:
+        enabled: true
+        file: "php{{ php.version }}-fpm-zabbix.sock"
+
+# Apache
+apache:
+  enabled: false
+  service:
+    enabled: true
+    state: "started"
+
+# Apache -> install
+apache_install:
+  enabled: false
+
+# Apache -> config -> virtualhost.conf
+apache_virtualhost:
+  zabbix_conf:
+    enabled: false
+    file: "zabbix.conf"
+    state: "present"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__apache.j2"
+    backup: false
+    vars:
+      ip: "*"
+      port: "80"
+      ServerName: "www.example.com"
+      ServerAdmin: "webmaster@localhost"
+      DocumentRoot: "/usr/share/zabbix/"
