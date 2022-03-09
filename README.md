@@ -10,8 +10,10 @@
 | Ubuntu 18.04     |  Zabbix  6.0 lts   |
 | Oracle Linux 8   |  Zabbix  6.0 lts   |
 | Rocky Linux 8    |  Zabbix  6.0 lts   |     
-                                          
-Zabbix Roles: [zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)    
+ 
+Compatible with roles: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php)
+
+Another Zabbix roles: [zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)
 
 ### 1) Install role from Galaxy
 ```
@@ -24,7 +26,7 @@ ansible-galaxy install darexsu.nginx --force
     - install
       - [Zabbix-GUI](#install-zabbix-gui)     
     - config
-      - [zabbix.conf.php](#configure-zabbix-conf-php)
+      - [zabbix.conf.php](#configure-zabbixconfphp)
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):
 ```
