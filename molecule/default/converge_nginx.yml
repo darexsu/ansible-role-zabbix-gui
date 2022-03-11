@@ -86,29 +86,50 @@
       apache:
         enabled: true
         service:
+          enabled: false
+          state: "stopped"
+
+      # Nginx
+      nginx:
+        enabled: true
+        src: "distribution"
+      # Nginx -> install
+      nginx_install:
+        enabled: true
+        packages: [nginx]
+        service:
           enabled: true
           state: "started"
-      # Apache -> install
-      apache_install:
+      # Nginx -> config
+      nginx_conf:
         enabled: true
-      # Apache -> config -> virtualhost.conf
-      apache_virtualhost:
-      # Apache -> config -> delete default virtual_host
+        vars:
+          user: "www-data"
+      # Nginx -> config -> virtualhost.conf
+      nginx_virtualhost:
         default_conf:
           enabled: true
+          file: "default.conf"
           state: "absent"
         zabbix_conf:
           enabled: true
           file: "zabbix.conf"
           state: "present"
-          src: "../../darexsu.zabbix_gui/templates/zabbix_gui__apache.j2"
+          src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
           backup: false
           vars:
-            ip: "*"
-            port: "80"
-            ServerName: "www.example.com"
-            ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/usr/share/zabbix/"
+            listen_port: "80"
+            listen_ipv6: false
+            server_name: "localhost"
+            root: "/usr/share/zabbix/"
+            access_log: false
+            error_log: false
+            tcp_ip_socket:
+              enabled: false
+              listen: "127.0.0.1:9000"
+            unix_socket:
+              enabled: true
+              file: "php{{ php.version }}-fpm-zabbix.sock"
 
   tasks:
     - name: include role darexsu.zabbix_gui
