@@ -91,6 +91,15 @@
       # Apache -> install
       apache_install:
         enabled: true
+      # Apache -> config -> apache.conf
+      apache_conf:
+        enabled: true
+        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+        backup: false
+        vars:
+          apache_user: "www-data"
+          apache_group: "www-data"
       # Apache -> config -> virtualhost.conf
       apache_virtualhost:
       # Apache -> config -> delete default virtual_host

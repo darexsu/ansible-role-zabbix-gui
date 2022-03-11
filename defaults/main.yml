@@ -176,6 +176,16 @@ apache:
     enabled: true
     state: "started"
 
+# Apache -> config -> apache.conf
+apache_conf:
+  enabled: false
+  file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
+  src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
+  backup: false
+  vars:
+    apache_user: "www-data"
+    apache_group: "www-data"
+
 # Apache -> install
 apache_install:
   enabled: false
@@ -200,3 +210,25 @@ apache_virtualhost:
       ServerName: "www.example.com"
       ServerAdmin: "webmaster@localhost"
       DocumentRoot: "/usr/share/zabbix/"
+
+# Apache -> constants
+apache_const:
+  Debian:
+    service_name: "apache2"
+    conf_file: "apache2.conf"
+    conf_path: "/etc/apache2/"
+    conf_src: "apache__conf_Debian.j2"
+    virtualhost_path: "/etc/apache2/sites-available/"
+    virtualhost_path_enabled: "/etc/apache2/sites-enabled/"
+    virtualhost_default_file: "000-default.conf"
+    mods_enabled_path: "/etc/apache2/mods-enabled"
+    mods_available_path: "/etc/apache2/mods-available"
+  RedHat:
+    service_name: "httpd"
+    conf_file: "httpd.conf"
+    conf_path: "/etc/httpd/conf/"
+    conf_src: "apache__conf_RedHat.j2"
+    virtualhost_path: "/etc/httpd/conf.d/"
+    virtualhost_default_file: "welcome.conf"
+    mods_available_path: "/etc/httpd/conf.modules.d/"
+    mods_file: [00-base.conf, 00-dav.conf, 00-lua.conf, 00-mpm.conf, 00-optional.conf, 00-proxy.conf, 00-systemd.conf, 01-cgi.conf, 10-h2.conf, 10-proxy_h2.conf]

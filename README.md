@@ -203,8 +203,8 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       zabbix_gui_install:
         enabled: true
         packages:
-          Debian: [zabbix-frontend-php, zabbix-apache-conf]
-          RedHat: [zabbix-web-mysql, zabbix-apache-conf]
+          Debian: [zabbix-frontend-php]
+          RedHat: [zabbix-web-mysql]
         dependencies:
           Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
           RedHat: []
@@ -287,11 +287,10 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             ServerAdmin: "webmaster@localhost"
             DocumentRoot: "/usr/share/zabbix/"
 
-
   tasks:
-  - name: include role darexsu.zabbix_gui
-    include_role: 
-      name: darexsu.zabbix_gui
+    - name: include role darexsu.zabbix_gui
+      include_role: 
+        name: darexsu.zabbix_gui
 
 ```
 
@@ -339,9 +338,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           db_password: "{{ zabbix_gui.db_password }}"
 
   tasks:
-  - name: include role darexsu.zabbix_gui
-    include_role: 
-      name: darexsu.zabbix_gui
+    - name: include role darexsu.zabbix_gui
+      include_role: 
+        name: darexsu.zabbix_gui
 
 ```
 ##### configure zabbix.conf.php
@@ -379,8 +378,8 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           db_password: "{{ zabbix_gui.db_password }}"
 
   tasks:
-  - name: include role darexsu.zabbix_gui
-    include_role: 
-      name: darexsu.zabbix_gui
+    - name: include role darexsu.zabbix_gui
+      include_role: 
+        name: darexsu.zabbix_gui
 
 ```
