@@ -91,6 +91,11 @@
       # Apache -> install
       apache_install:
         enabled: true
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: true
+        mods_enabled: [proxy, proxy_fcgi]
+        mods_disabled: []
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true

@@ -196,6 +196,12 @@ apache_install:
     Debian: []
     RedHat: []
 
+# Apache -> config -> modules
+apache_modules:
+  enabled: false
+  mods_enabled: [proxy, proxy_fcgi]
+  mods_disabled: []
+
 # Apache -> config -> virtualhost.conf
 apache_virtualhost:
   zabbix_conf:

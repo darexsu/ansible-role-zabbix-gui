@@ -2,18 +2,18 @@
 
 [![CI Molecule](https://github.com/darexsu/ansible-role-zabbix-gui/actions/workflows/ci.yml/badge.svg)](https://github.com/darexsu/ansible-role-zabbix-gui/actions/workflows/ci.yml)&emsp;![](https://img.shields.io/static/v1?label=idempotence&message=ok&color=success)&emsp;![Ansible Role](https://img.shields.io/ansible/role/d/58156?color=blue&label=downloads)
 
-|  Testing         |  Zabbix repo       |
-| :--------------: | :----------------: |
-| Debian 11        |  Zabbix  6.0 lts   |
-| Debian 10        |  Zabbix  6.0 lts   |
-| Ubuntu 20.04     |  Zabbix  6.0 lts   |
-| Ubuntu 18.04     |  Zabbix  6.0 lts   |
-| Oracle Linux 8   |  Zabbix  6.0 lts   |
-| Rocky Linux 8    |  Zabbix  6.0 lts   |     
+|  Testing         |  Zabbix repo       |  Ready for use     |
+| :--------------: | :----------------: | :----------------: |
+| Debian 11        |  Zabbix  6.0 lts   |:heavy_check_mark:  |
+| Debian 10        |  Zabbix  6.0 lts   |:heavy_check_mark:  |
+| Ubuntu 20.04     |  Zabbix  6.0 lts   |:heavy_check_mark:  |
+| Ubuntu 18.04     |  Zabbix  6.0 lts   |:heavy_check_mark:  |
+| Oracle Linux 8   |  Zabbix  6.0 lts   | configure or disable Selinux, open port:80 |
+| Rocky Linux 8    |  Zabbix  6.0 lts   | configure or disable Selinux, open port:80 |  
  
 Compatible with roles: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php)
 
-Another Zabbix roles: [zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)
+Another Zabbix roles: [Zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [Zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [Zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)
 
 ### 1) Install role from Galaxy
 ```
