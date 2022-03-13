@@ -238,3 +238,21 @@ apache_const:
     virtualhost_default_file: "welcome.conf"
     mods_available_path: "/etc/httpd/conf.modules.d/"
     mods_file: [00-base.conf, 00-dav.conf, 00-lua.conf, 00-mpm.conf, 00-optional.conf, 00-proxy.conf, 00-systemd.conf, 01-cgi.conf, 10-h2.conf, 10-proxy_h2.conf]
+
+# FirewallD
+firewalld:
+  enabled: false
+# FirewallD -> rules
+firewalld_rules:
+  service_http:
+    enabled: false
+    zone: "public"
+    state: "enabled"
+    service: "http"
+    permanent: true
+  service_https:
+    enabled: false
+    zone: "public"
+    state: "enabled"
+    service: "https"
+    permanent: true

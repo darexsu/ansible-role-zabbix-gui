@@ -88,16 +88,16 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
-      
+        enabled: true
+
       # PHP
       php:
-        enabled: false
+        enabled: true
         version: "7.4"
         src: "third_party"
       # PHP -> install
       php_install:
-        enabled: false
+        enabled: true
       # PHP -> config
       php_fpm:
         zabbix_conf:
@@ -112,24 +112,34 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 
       # Nginx
       nginx:
-        enabled: false
+        enabled: true
         src: "distribution"
       # Nginx -> install
       nginx_install:
-        enabled: false
+        enabled: true
       # Nginx -> config -> nginx.conf
       nginx_conf:
-        enabled: false
+        enabled: true
       # Nginx -> config -> virtualhost.conf
       nginx_virtualhost:
         default_conf:
           enabled: true
           file: "default.conf"
           state: "absent"
-        # Nginx -> config -> virtualhost.conf
+      # Nginx -> config -> virtualhost.conf
       nginx_virtualhost:
         zabbix_conf:
-          enabled: false
+          enabled: true
+
+      # FirewallD
+      firewalld:
+        enabled: true
+      # FirewallD -> rules
+      firewalld_rules:
+        service_http:
+          enabled: true
+        service_https:
+          enabled: true
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -161,17 +171,16 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
       
       # PHP
       php:
-        enabled: false
+        enabled: true
         version: "7.4"
         src: "third_party"
-
       # PHP -> install
       php_install:
-        enabled: false
+        enabled: true
       # PHP -> config
       php_fpm:
         zabbix_conf:
@@ -182,7 +191,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
       # Apache -> install
       apache_install:
-        enabled: false
+        enabled: true
       # Apache -> config -> virtualhost.conf
       apache_virtualhost:
       # Apache -> config -> delete default virtual_host
@@ -191,7 +200,17 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "absent"
       # Apache -> config -> add zabbix virtual_host
         zabbix_conf:
-          enabled: false
+          enabled: true
+
+      # FirewallD
+      firewalld:
+        enabled: true
+      # FirewallD -> rules
+      firewalld_rules:
+        service_http:
+          enabled: true
+        service_https:
+          enabled: true
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -210,7 +229,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     merge:
       # Zabbix_GUI
       zabbix_gui:
-        enabled: false
+        enabled: true
         src: "third_party"
         version: "6.0"
         server_name: "Zabbix server"
@@ -222,10 +241,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         db_password: "change_me"
       # Zabbix_GUI -> install
       zabbix_gui_install:
-        enabled: false
-      # Zabbix_GUI -> config
-      zabbix_gui_config:
-        enabled: false
+        enabled: true
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -255,7 +271,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         db_password: "change_me"
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
         vars:
           db_type: "{{ zabbix_gui.db_type }}"
           db_server: "{{ zabbix_gui.db_server }}"
@@ -263,7 +279,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           db_database: "{{ zabbix_gui.db_name }}"
           db_user: "{{ zabbix_gui.db_user }}"
           db_password: "{{ zabbix_gui.db_password }}"
-
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -301,7 +316,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           RedHat: []
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
         file: "zabbix.conf.php"
         src: "zabbix_gui__zabbix.conf.php.j2"
         backup: false
@@ -328,7 +343,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       
       # PHP
       php:
-        enabled: false
+        enabled: true
         version: "7.4"
         src: "third_party"
         service:
@@ -336,7 +351,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "started"
       # PHP -> install
       php_install:
-        enabled: false
+        enabled: true
         packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
         dependencies:
           Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
@@ -377,21 +392,21 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 
       # Nginx
       nginx:
-        enabled: false
+        enabled: true
         src: "distribution"
         service:
           enabled: true
           state: "started"
       # Nginx -> install
       nginx_install:
-        enabled: false
+        enabled: true
         packages: [nginx]
         dependencies:
           Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
           RedHat: []
       # Nginx -> config -> nginx.conf
       nginx_conf:
-        enabled: false
+        enabled: true
         file: "nginx.conf"
         src: "nginx__conf.j2"
         backup: false
@@ -415,10 +430,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           enabled: true
           file: "default.conf"
           state: "absent"
-        # Nginx -> config -> virtualhost.conf
-      nginx_virtualhost:
+      # Nginx -> config -> zabbix.conf
         zabbix_conf:
-          enabled: false
+          enabled: true
           file: "zabbix.conf"
           state: "present"
           src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
@@ -436,6 +450,24 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             unix_socket:
               enabled: true
               file: "php{{ php.version }}-fpm-zabbix.sock"
+
+      # FirewallD
+      firewalld:
+        enabled: true
+      # FirewallD -> rules
+      firewalld_rules:
+        service_http:
+          enabled: true
+          zone: "public"
+          state: "enabled"
+          service: "http"
+          permanent: true
+        service_https:
+          enabled: true
+          zone: "public"
+          state: "enabled"
+          service: "https"
+          permanent: true
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -473,7 +505,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           RedHat: []
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
         file: "zabbix.conf.php"
         src: "zabbix_gui__zabbix.conf.php.j2"
         backup: false
@@ -500,7 +532,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       
       # PHP
       php:
-        enabled: false
+        enabled: true
         version: "7.4"
         src: "third_party"
         service:
@@ -508,7 +540,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "started"
       # PHP -> install
       php_install:
-        enabled: false
+        enabled: true
         packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
         dependencies:
           Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
@@ -548,7 +580,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "started"
       # Apache -> install
       apache_install:
-        enabled: false
+        enabled: true
         packages:
           Debian: [apache2]
           RedHat: [httpd]
@@ -563,7 +595,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           state: "absent"
       # Apache -> config -> add zabbix virtual_host
         zabbix_conf:
-          enabled: false
+          enabled: true
           file: "zabbix.conf"
           state: "present"
           src: "../../darexsu.zabbix_gui/templates/zabbix_gui__apache.j2"
@@ -574,6 +606,24 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
             ServerName: "www.example.com"
             ServerAdmin: "webmaster@localhost"
             DocumentRoot: "/usr/share/zabbix/"
+
+      # FirewallD
+      firewalld:
+        enabled: true
+      # FirewallD -> rules
+      firewalld_rules:
+        service_http:
+          enabled: true
+          zone: "public"
+          state: "enabled"
+          service: "http"
+          permanent: true
+        service_https:
+          enabled: true
+          zone: "public"
+          state: "enabled"
+          service: "https"
+          permanent: true
 
   tasks:
     - name: include role darexsu.zabbix_gui
@@ -592,7 +642,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     merge:
       # Zabbix_GUI
       zabbix_gui:
-        enabled: false
+        enabled: true
         src: "third_party"
         version: "6.0"
         server_name: "Zabbix server"
@@ -604,7 +654,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         db_password: "change_me"
       # Zabbix_GUI -> install
       zabbix_gui_install:
-        enabled: false
+        enabled: true
         packages:
           Debian: [zabbix-frontend-php]
           RedHat: [zabbix-web-mysql]
@@ -613,7 +663,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           RedHat: []
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
         file: "zabbix.conf.php"
         src: "zabbix_gui__zabbix.conf.php.j2"
         backup: false
@@ -666,7 +716,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         db_password: "change_me"
       # Zabbix_GUI -> config
       zabbix_gui_config:
-        enabled: false
+        enabled: true
         file: "zabbix.conf.php"
         src: "zabbix_gui__zabbix.conf.php.j2"
         backup: false

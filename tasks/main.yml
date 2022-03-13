@@ -25,9 +25,13 @@
   include_tasks: ./tasks/zabbix_gui/install/zabbix_gui__install_{{ ansible_os_family }}.yml
   when: zabbix_gui_install.enabled
 
+- name: gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
 - name: include zabbix_gui config
   include_tasks: ./tasks/zabbix_gui/config/zabbix_gui__config.yml
-  when: zabbix_gui_config.enabled
+  when: (zabbix_gui_install['packages'][ansible_os_family]) in ansible_facts.packages
 
 - name: include php tasks
   include_tasks: ./tasks/php/zabbix_gui__php.yml
@@ -40,3 +44,7 @@
 - name: include nginx tasks
   include_tasks: ./tasks/nginx/zabbix_gui__nginx.yml
   when: nginx.enabled
+
+- name: include firewalld tasks
+  include_tasks: ./tasks/firewalld/zabbix_gui__firewalld.yml
+  when: firewalld.enabled
