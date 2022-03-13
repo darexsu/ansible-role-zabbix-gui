@@ -127,7 +127,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
           file: "default.conf"
           state: "absent"
       # Nginx -> config -> virtualhost.conf
-      nginx_virtualhost:
         zabbix_conf:
           enabled: true
 
