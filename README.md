@@ -14,8 +14,8 @@
       - [install: Zabbix-GUI](#install-zabbix-gui-short-version)
       - [configure: zabbix.conf.php](#configure-zabbixconfphp-short-version)  
   - Playbooks (full version):
-      - [install and configure: Zabbix-gui, PHP, Nginx](#install-and-configure-zabbix-gui-php-nginx-full-version)
-      - [install and configure: Zabbix-gui, PHP, Apache](#install-and-configure-zabbix-gui-php-apache-full-version)
+      - [install and configure: Zabbix-gui, PHP, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-full-version)
+      - [install and configure: Zabbix-gui, PHP, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-full-version)
       - [install: Zabbix-GUI](#install-zabbix-gui-full-version)
       - [configure: zabbix.conf.php](#configure-zabbixconfphp-full-version)  
 
