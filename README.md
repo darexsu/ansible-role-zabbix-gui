@@ -9,8 +9,8 @@
       - [relative](#relative)
       - [behaviour](#behaviour)
   - Playbooks (short version):
-      - [install and configure: Zabbix-gui, PHP, Nginx](#install-and-configure-zabbix-gui-php-nginx-short-version)
-      - [install and configure: Zabbix-gui, PHP, Apache](#install-and-configure-zabbix-gui-php-apache-short-version)
+      - [install and configure: Zabbix-gui, PHP, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-short-version)
+      - [install and configure: Zabbix-gui, PHP, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-short-version)
       - [install: Zabbix-GUI](#install-zabbix-gui-short-version)
       - [configure: zabbix.conf.php](#configure-zabbixconfphp-short-version)  
   - Playbooks (full version):
@@ -37,7 +37,7 @@ ansible-galaxy install darexsu.nginx --force
 
 ### Requirements
 
-dependencies will automatically be installed: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php)
+dependencies will automatically be installed: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php), [FirewallD](https://github.com/darexsu/ansible-role-firewalld)
 
 ### Relative
 
@@ -190,6 +190,9 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         enabled: true
       # Apache -> install
       apache_install:
+        enabled: true
+      # Apache -> config -> modules
+      apache_modules:
         enabled: true
       # Apache -> config -> virtualhost.conf
       apache_virtualhost:
@@ -586,6 +589,11 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
         dependencies:
           Debian: []
           RedHat: []
+      # Apache -> config -> modules
+      apache_modules:
+        enabled: false
+        mods_enabled: [proxy, proxy_fcgi]
+        mods_disabled: []
       # Apache -> config -> virtualhost.conf
       apache_virtualhost:
       # Apache -> config -> delete default virtual_host

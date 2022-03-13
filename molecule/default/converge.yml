@@ -67,8 +67,8 @@
           file: "default.conf"
           state: "absent"
       # Nginx -> config -> virtualhost.conf
-          zabbix_conf:
-            enabled: true
+        zabbix_conf:
+          enabled: true
 
       # FirewallD
       firewalld:

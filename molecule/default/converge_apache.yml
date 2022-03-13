@@ -26,25 +26,9 @@
       # Zabbix_GUI -> install
       zabbix_gui_install:
         enabled: true
-        packages:
-          Debian: [zabbix-frontend-php]
-          RedHat: [zabbix-web-mysql]
-        dependencies:
-          Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-          RedHat: []
       # Zabbix_GUI -> config
       zabbix_gui_config:
         enabled: true
-        file: "zabbix.conf.php"
-        src: "zabbix_gui__zabbix.conf.php.j2"
-        backup: false
-        vars:
-          db_type: "{{ zabbix_gui.db_type }}"
-          db_server: "{{ zabbix_gui.db_server }}"
-          db_port: "{{ zabbix_gui.db_port }}"
-          db_database: "{{ zabbix_gui.db_name }}"
-          db_user: "{{ zabbix_gui.db_user }}"
-          db_password: "{{ zabbix_gui.db_password }}"
 
       # PHP
       php:
@@ -54,52 +38,20 @@
       # PHP -> install
       php_install:
         enabled: true
-        packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
-      # PHP -> config -> php-fpm
+      # PHP -> config
       php_fpm:
         zabbix_conf:
           enabled: true
-          file: "zabbix.conf"
-          state: "present"
-          src: "../../darexsu.zabbix_gui/templates/zabbix_gui__php.j2"
-          backup: false
-          vars:
-            webserver_user: "www-data"
-            webserver_group: "www-data"
-            pm: "dynamic"
-            pm_max_children: "10"
-            pm_start_servers: "5"
-            pm_min_spare_servers: "5"
-            pm_max_spare_servers: "5"
-            pm_max_requests: "500"
-            date_timezone: "Europe/Moscow"
-            tcp_ip_socket:
-              enabled: false
-              listen: "127.0.0.1:9000"
-            unix_socket:
-              enabled: true
-              file: "php{{ php.version }}-fpm-zabbix.sock"
-              user: "www-data"
-              group: "www-data"
 
       # Apache
       apache:
         enabled: true
-        service:
-          enabled: true
-          state: "started"
       # Apache -> install
       apache_install:
         enabled: true
       # Apache -> config -> apache.conf
       apache_conf:
         enabled: true
-        file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
-        src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
-        backup: false
-        vars:
-          apache_user: "www-data"
-          apache_group: "www-data"
       # Apache -> config -> modules
       apache_modules:
         enabled: true
@@ -111,18 +63,19 @@
         default_conf:
           enabled: true
           state: "absent"
+      # Apache -> config -> add zabbix virtual_host
         zabbix_conf:
           enabled: true
-          file: "zabbix.conf"
-          state: "present"
-          src: "../../darexsu.zabbix_gui/templates/zabbix_gui__apache.j2"
-          backup: false
-          vars:
-            ip: "*"
-            port: "80"
-            ServerName: "www.example.com"
-            ServerAdmin: "webmaster@localhost"
-            DocumentRoot: "/usr/share/zabbix/"
+
+      # FirewallD
+      firewalld:
+        enabled: true
+      # FirewallD -> rules
+      firewalld_rules:
+        service_http:
+          enabled: true
+        service_https:
+          enabled: true
 
   tasks:
     - name: include role darexsu.zabbix_gui

@@ -4,3 +4,5 @@
 - name: darexsu.nginx
 
 - name: darexsu.apache
+
+- name: darexsu.firewalld

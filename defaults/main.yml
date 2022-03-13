@@ -242,6 +242,7 @@ apache_const:
 # FirewallD
 firewalld:
   enabled: false
+
 # FirewallD -> rules
 firewalld_rules:
   service_http:
