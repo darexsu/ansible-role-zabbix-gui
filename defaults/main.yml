@@ -4,6 +4,9 @@
 #    PHP
 #    / \
 # Nginx Apache
+#    \ /
+#     |
+#  FirewallD
 
 # Zabbix_GUI
 zabbix_gui:

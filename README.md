@@ -32,7 +32,7 @@
 
 ### Install
 ```
-ansible-galaxy install darexsu.nginx --force
+ansible-galaxy install darexsu.zabbix_gui --force
 ```
 
 ### Requirements
