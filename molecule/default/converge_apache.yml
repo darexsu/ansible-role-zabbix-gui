@@ -14,7 +14,7 @@
       # Zabbix_GUI
       zabbix_gui:
         enabled: true
-        src: "third_party"
+        repo: "zabbix"
         version: "6.0"
         server_name: "Zabbix server"
         db_type: "MYSQL"
@@ -34,7 +34,7 @@
       php:
         enabled: true
         version: "7.4"
-        src: "third_party"
+        repo: "third_party"
       # PHP -> install
       php_install:
         enabled: true
@@ -49,14 +49,12 @@
       # Apache -> install
       apache_install:
         enabled: true
-      # Apache -> config -> apache.conf
-      apache_conf:
-        enabled: true
       # Apache -> config -> modules
       apache_modules:
         enabled: true
-        mods_enabled: [proxy, proxy_fcgi]
-        mods_disabled: []
+      # Apache -> config -> apache.conf
+      apache_conf:
+        enabled: true
       # Apache -> config -> virtualhost.conf
       apache_virtualhost:
       # Apache -> config -> delete default virtual_host

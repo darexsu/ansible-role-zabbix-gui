@@ -11,7 +11,7 @@
 # Zabbix_GUI
 zabbix_gui:
   enabled: false
-  src: "third_party"
+  repo: "zabbix"
   version: "6.0"
   server_name: "Zabbix server"
   db_type: "MYSQL"
@@ -35,9 +35,9 @@ zabbix_gui_install:
 zabbix_gui_config:
   enabled: false
   file: "zabbix.conf.php"
-  src: "zabbix_gui__zabbix.conf.php.j2"
+  src: "zabbix_gui_zabbix.conf.php.j2"
   backup: false
-  vars:
+  data:
     db_type: "{{ zabbix_gui.db_type }}"
     db_server: "{{ zabbix_gui.db_server }}"
     db_port: "{{ zabbix_gui.db_port }}"
@@ -73,7 +73,7 @@ zabbix_gui_const:
 php:
   enabled: false
   version: "7.4"
-  src: "third_party"
+  repo: "third_party"
   service:
     enabled: true
     state: "started"
@@ -89,12 +89,12 @@ php_install:
 # PHP -> config
 php_fpm:
   zabbix_conf:
-    enabled: true
+    enabled: false
     file: "zabbix.conf"
     state: "present"
-    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__php.j2"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui_php.j2"
     backup: false
-    vars:
+    data:
       webserver_user: "www-data"
       webserver_group: "www-data"
       pm: "dynamic"
@@ -116,7 +116,7 @@ php_fpm:
 # Nginx
 nginx:
   enabled: false
-  src: "distribution"
+  repo: "nginx"
   service:
     enabled: true
     state: "started"
@@ -133,9 +133,9 @@ nginx_install:
 nginx_conf:
   enabled: false
   file: "nginx.conf"
-  src: "nginx__conf.j2"
+  src: "nginx_conf.j2"
   backup: false
-  vars:
+  data:
     user: "www-data"
     worker_processes: "auto"
     error_log: "/var/log/nginx/error.log notice"
@@ -152,13 +152,17 @@ nginx_conf:
 
 # Nginx -> config -> virtualhost.conf
 nginx_virtualhost:
+  default_conf:
+    enabled: false
+    file: "default.conf"
+    state: "absent"
   zabbix_conf:
     enabled: false
     file: "zabbix.conf"
     state: "present"
-    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__nginx.j2"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui_nginx.j2"
     backup: false
-    vars:
+    data:
       listen_port: "80"
       listen_ipv6: false
       server_name: "localhost"
@@ -185,7 +189,7 @@ apache_conf:
   file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
   src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
   backup: false
-  vars:
+  data:
     apache_user: "www-data"
     apache_group: "www-data"
 
@@ -207,13 +211,17 @@ apache_modules:
 
 # Apache -> config -> virtualhost.conf
 apache_virtualhost:
+  default_conf:
+    enabled: true
+    file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
+    state: "absent"
   zabbix_conf:
     enabled: false
     file: "zabbix.conf"
     state: "present"
-    src: "../../darexsu.zabbix_gui/templates/zabbix_gui__apache.j2"
+    src: "../../darexsu.zabbix_gui/templates/zabbix_gui_apache.j2"
     backup: false
-    vars:
+    data:
       ip: "*"
       port: "80"
       ServerName: "www.example.com"
@@ -226,7 +234,7 @@ apache_const:
     service_name: "apache2"
     conf_file: "apache2.conf"
     conf_path: "/etc/apache2/"
-    conf_src: "apache__conf_Debian.j2"
+    conf_src: "apache_conf_Debian.j2"
     virtualhost_path: "/etc/apache2/sites-available/"
     virtualhost_path_enabled: "/etc/apache2/sites-enabled/"
     virtualhost_default_file: "000-default.conf"
@@ -236,7 +244,7 @@ apache_const:
     service_name: "httpd"
     conf_file: "httpd.conf"
     conf_path: "/etc/httpd/conf/"
-    conf_src: "apache__conf_RedHat.j2"
+    conf_src: "apache_conf_RedHat.j2"
     virtualhost_path: "/etc/httpd/conf.d/"
     virtualhost_default_file: "welcome.conf"
     mods_available_path: "/etc/httpd/conf.modules.d/"
@@ -249,13 +257,13 @@ firewalld:
 # FirewallD -> rules
 firewalld_rules:
   service_http:
-    enabled: false
+    enabled: true
     zone: "public"
     state: "enabled"
     service: "http"
     permanent: true
   service_https:
-    enabled: false
+    enabled: true
     zone: "public"
     state: "enabled"
     service: "https"

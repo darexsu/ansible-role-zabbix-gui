@@ -17,7 +17,7 @@
       ansible.builtin.package:
         name: "{{ zabbix_gui_const[ansible_os_family]['repo'] }}"
         state: present
-  when: zabbix_gui.src == "third_party"
+  when: zabbix_gui.repo == "zabbix"
 
 - name: install zabbix packages.
   ansible.builtin.package:

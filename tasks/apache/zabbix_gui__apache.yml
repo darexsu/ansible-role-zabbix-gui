@@ -1,4 +1,0 @@
----
-- name: include role nginx
-  include_role:
-    name: darexsu.apache

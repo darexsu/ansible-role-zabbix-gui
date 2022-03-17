@@ -21,30 +21,35 @@
   meta: end_play
   when: not zabbix_gui.enabled
 
-- name: include zabbix_gui install
-  include_tasks: ./tasks/zabbix_gui/install/zabbix_gui__install_{{ ansible_os_family }}.yml
+- name: "-> 01_Zabbix_GUI_install_{{ ansible_os_family }}.yml"
+  include_tasks: "./tasks/01_Zabbix_GUI_install_{{ ansible_os_family }}.yml"
   when: zabbix_gui_install.enabled
 
 - name: gather the package facts
   ansible.builtin.package_facts:
     manager: auto
 
-- name: include zabbix_gui config
-  include_tasks: ./tasks/zabbix_gui/config/zabbix_gui__config.yml
+- name: "-> 02_Zabbix_GUI_config.yml"
+  include_tasks: "./tasks/02_Zabbix_GUI_config.yml"
   when: zabbix_gui_install['packages'][ansible_os_family][0] in ansible_facts.packages and zabbix_gui_config.enabled
 
-- name: include php tasks
-  include_tasks: ./tasks/php/zabbix_gui__php.yml
+- name: include role php
+  include_role:
+    name: darexsu.php
+    public: true
   when: php.enabled
 
-- name: include apache tasks
-  include_tasks: ./tasks/apache/zabbix_gui__apache.yml
+- name: include role apache
+  include_role:
+    name: darexsu.apache
   when: apache.enabled
 
-- name: include nginx tasks
-  include_tasks: ./tasks/nginx/zabbix_gui__nginx.yml
+- name: include role nginx
+  include_role:
+    name: darexsu.nginx
   when: nginx.enabled
 
-- name: include firewalld tasks
-  include_tasks: ./tasks/firewalld/zabbix_gui__firewalld.yml
+- name: include role firewalld
+  include_role:
+    name: darexsu.firewalld
   when: firewalld.enabled

@@ -1,0 +1,60 @@
+<VirtualHost {{ apache_virtualhost[item.key]["data"]["ip"] | default() }}:{{ apache_virtualhost[item.key]["data"]["port"] | default()}} >
+	{% if apache_virtualhost[item.key]["data"]["ServerName"] is defined %}
+	ServerName {{ apache_virtualhost[item.key]["data"]["ServerName"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["ServerAdmin"] is defined %}
+	ServerAdmin {{ apache_virtualhost[item.key]["data"]["ServerAdmin"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["DocumentRoot"] is defined %}
+	DocumentRoot {{ apache_virtualhost[item.key]["data"]["DocumentRoot"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["ErrorLog"] is defined %}
+	ErrorLog {{ apache_virtualhost[item.key]["data"]["ErrorLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["CustomLog"] is defined %}
+	CustomLog {{ apache_virtualhost[item.key]["data"]["CustomLog"] }}
+	{% endif %}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLEngine {{ apache_virtualhost[item.key]["data"]["SSLEngine"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLCertificateFile	{{ apache_virtualhost[item.key]["data"]["SSLCertificateFile"] }}
+	{% endif -%}
+	{% if apache_virtualhost[item.key]["data"]["SSLEngine"] is defined and apache_virtualhost[item.key]["data"]["SSLEngine"] -%}
+	SSLCertificateKeyFile {{ apache_virtualhost[item.key]["data"]["SSLCertificateKeyFile"] }}
+	{% endif -%}
+</VirtualHost>
+
+<Directory "/usr/share/zabbix">
+    Options FollowSymLinks
+    AllowOverride None
+    Require all granted
+
+    <IfModule dir_module>
+        DirectoryIndex index.php
+    </IfModule>
+
+    <FilesMatch \.(php|phar)$>
+        SetHandler "proxy:unix:{{ php_const[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ php_fpm[item.key]['data']['unix_socket']['file'] | default("php-fpm.sock") }}|fcgi://localhost"
+    </FilesMatch>
+</Directory>
+
+<Directory "/usr/share/zabbix/conf">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/app">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/include">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/local">
+    Require all denied
+</Directory>
+
+<Directory "/usr/share/zabbix/vendor">
+    Require all denied
+</Directory>

@@ -1,13 +1,13 @@
 server {
-    listen       {{ nginx_virtualhost[item.key]['vars']['listen_port'] }};
-{% if nginx_virtualhost[item.key]['vars']['listen_ipv6'] %}
-    listen       [::]:{{ nginx_virtualhost[item.key]['vars']['listen_port'] }} ipv6only=on default_server;
+    listen       {{ nginx_virtualhost[item.key]['data']['listen_port'] }};
+{% if nginx_virtualhost[item.key]['data']['listen_ipv6'] %}
+    listen       [::]:{{ nginx_virtualhost[item.key]['data']['listen_port'] }} ipv6only=on default_server;
 {% endif %}
-{% if nginx_virtualhost[item.key]['vars']['server_name'] %}
-    server_name {{ nginx_virtualhost[item.key]['vars']['server_name'] }};
+{% if nginx_virtualhost[item.key]['data']['server_name'] %}
+    server_name {{ nginx_virtualhost[item.key]['data']['server_name'] }};
 {% endif %}
-{% if nginx_virtualhost[item.key]['vars']['root'] %}
-    root {{ nginx_virtualhost[item.key]['vars']['root'] }};
+{% if nginx_virtualhost[item.key]['data']['root'] %}
+    root {{ nginx_virtualhost[item.key]['data']['root'] }};
 {% endif %}
 
         index   index.php;
@@ -36,13 +36,13 @@ server {
                 return          404;
         }
 
-{% if nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['enabled'] or nginx_virtualhost[item.key]['vars']['unix_socket']['enabled'] %}
+{% if nginx_virtualhost[item.key]['data']['tcp_ip_socket']['enabled'] or nginx_virtualhost[item.key]['data']['unix_socket']['enabled'] %}
         location ~ [^/]\.php(/|$) {
-                {% if nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['enabled'] %}
-                fastcgi_pass {{ nginx_virtualhost[item.key]['vars']['tcp_ip_socket']['listen'] }};
+                {% if nginx_virtualhost[item.key]['data']['tcp_ip_socket']['enabled'] %}
+                fastcgi_pass {{ nginx_virtualhost[item.key]['data']['tcp_ip_socket']['listen'] }};
                 {% endif %}
-                {% if nginx_virtualhost[item.key]['vars']['unix_socket']['enabled'] %}
-                fastcgi_pass unix:{{ php_const[ansible_os_family][php.src]['php_fpm_unix_socket_path'] }}{{ nginx_virtualhost[item.key]['vars']['unix_socket']['file'] }};
+                {% if nginx_virtualhost[item.key]['data']['unix_socket']['enabled'] %}
+                fastcgi_pass unix:{{ php_const[ansible_os_family][php.repo]['php_fpm_unix_socket_path'] | default("/var/run/php/") }}{{ nginx_virtualhost[item.key]['data']['unix_socket']['file'] | default("php-fpm.sock") }};
                 {% endif %}
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
                 fastcgi_index   index.php;

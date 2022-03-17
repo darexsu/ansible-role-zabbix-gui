@@ -1,4 +1,0 @@
----
-- name: include role firewalld
-  include_role:
-    name: darexsu.firewalld

@@ -1,5 +1,0 @@
----
-- name: include role php
-  include_role:
-    name: darexsu.php
-    public: true
