@@ -212,7 +212,7 @@ apache_modules:
 # Apache -> config -> virtualhost.conf
 apache_virtualhost:
   default_conf:
-    enabled: true
+    enabled: false
     file: "{{ apache_const[ansible_os_family]['virtualhost_default_file'] }}"
     state: "absent"
   zabbix_conf:
