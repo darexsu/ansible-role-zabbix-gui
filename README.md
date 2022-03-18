@@ -36,8 +36,9 @@ ansible-galaxy install darexsu.zabbix_gui --force
 ```
 
 ### Requirements
+collections: [ansible.posix](https://docs.ansible.com/ansible/latest/collections/ansible/posix/index.html)
 
-dependencies will automatically be installed: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php), [FirewallD](https://github.com/darexsu/ansible-role-firewalld)
+roles: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://github.com/darexsu/ansible-role-apache), [PHP](https://github.com/darexsu/ansible-role-php), [FirewallD](https://github.com/darexsu/ansible-role-firewalld) (will automatically be installed)
 
 ### Relative
 
