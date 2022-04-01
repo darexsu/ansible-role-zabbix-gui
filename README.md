@@ -7,6 +7,7 @@
       - [install](#install)
       - [requirements](#requirements)
       - [relative](#relative)
+      - [FAQ](#faq)
       - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
       - [install and configure: Zabbix-gui v6.0, PHP v7.4, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-merge-version)
