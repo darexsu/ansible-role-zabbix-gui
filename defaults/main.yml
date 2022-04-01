@@ -24,12 +24,6 @@ zabbix_gui:
 # Zabbix_GUI -> install
 zabbix_gui_install:
   enabled: false
-  packages:
-    Debian: [zabbix-frontend-php]
-    RedHat: [zabbix-web-mysql]
-  dependencies:
-    Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-    RedHat: []
 
 # Zabbix_GUI -> config
 zabbix_gui_config:
@@ -61,12 +55,16 @@ zabbix_gui_config:
 # Zabbix_GUI -> constants
 zabbix_gui_const:
   Debian:
-    repo: "deb http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
-    gpg: "http://repo.zabbix.com/zabbix-official-repo.key"
+    packages: [zabbix-frontend-php]
+    dependencies: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
+    zabbix_repo: "deb http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main"
+    zabbix_gpg: "http://repo.zabbix.com/zabbix-official-repo.key"
     config_path: "/etc/zabbix/web/"
   RedHat:
-    repo: "http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_gui.version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
-    gpg: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591"
+    packages: [zabbix-web-mysql]
+    dependencies: []
+    zabbix_repo: "http://repo.zabbix.com/zabbix/{{ zabbix_gui.version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_gui.version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
+    zabbix_gpg: "http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591"
     config_path: "/etc/zabbix/web/"
 
 # PHP
@@ -81,10 +79,7 @@ php:
 # PHP -> install
 php_install:
   enabled: false
-  packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
-  dependencies:
-    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
-    RedHat: []
+  modules: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
 
 # PHP -> config
 php_fpm:
@@ -124,10 +119,6 @@ nginx:
 # Nginx -> install
 nginx_install:
   enabled: false
-  packages: [nginx]
-  dependencies:
-    Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-    RedHat: []
 
 # Nginx -> config -> nginx.conf
 nginx_conf:
@@ -196,12 +187,6 @@ apache_conf:
 # Apache -> install
 apache_install:
   enabled: false
-  packages:
-    Debian: [apache2]
-    RedHat: [httpd]
-  dependencies:
-    Debian: []
-    RedHat: []
 
 # Apache -> config -> modules
 apache_modules:
@@ -227,28 +212,6 @@ apache_virtualhost:
       ServerName: "www.example.com"
       ServerAdmin: "webmaster@localhost"
       DocumentRoot: "/usr/share/zabbix/"
-
-# Apache -> constants
-apache_const:
-  Debian:
-    service_name: "apache2"
-    conf_file: "apache2.conf"
-    conf_path: "/etc/apache2/"
-    conf_src: "apache_conf_Debian.j2"
-    virtualhost_path: "/etc/apache2/sites-available/"
-    virtualhost_path_enabled: "/etc/apache2/sites-enabled/"
-    virtualhost_default_file: "000-default.conf"
-    mods_enabled_path: "/etc/apache2/mods-enabled"
-    mods_available_path: "/etc/apache2/mods-available"
-  RedHat:
-    service_name: "httpd"
-    conf_file: "httpd.conf"
-    conf_path: "/etc/httpd/conf/"
-    conf_src: "apache_conf_RedHat.j2"
-    virtualhost_path: "/etc/httpd/conf.d/"
-    virtualhost_default_file: "welcome.conf"
-    mods_available_path: "/etc/httpd/conf.modules.d/"
-    mods_file: [00-base.conf, 00-dav.conf, 00-lua.conf, 00-mpm.conf, 00-optional.conf, 00-proxy.conf, 00-systemd.conf, 01-cgi.conf, 10-h2.conf, 10-proxy_h2.conf]
 
 # FirewallD
 firewalld:

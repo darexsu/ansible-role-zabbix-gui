@@ -4,18 +4,18 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.dependencies.RedHat }}"
+  with_items: "{{ zabbix_gui_const[ansible_os_family]['dependencies'] }}"
 
 - name: add zabbix repo
   block:
     - name: add zabbix repository gpg key
       ansible.builtin.rpm_key:
-        key: "{{ zabbix_gui_const[ansible_os_family]['gpg'] }}"
+        key: "{{ zabbix_gui_const[ansible_os_family]['zabbix_gpg'] }}"
         state: present
 
     - name: add zabbix repository
       ansible.builtin.package:
-        name: "{{ zabbix_gui_const[ansible_os_family]['repo'] }}"
+        name: "{{ zabbix_gui_const[ansible_os_family]['zabbix_repo'] }}"
         state: present
   when: zabbix_gui.repo == "zabbix"
 
@@ -24,4 +24,4 @@
     name: "{{ item }}"
     state: present
     update_cache: true
-  with_items: "{{ zabbix_gui_install.packages.RedHat }}"
+  with_items: "{{ zabbix_gui_const[ansible_os_family]['packages'] }}"

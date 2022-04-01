@@ -312,12 +312,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # Zabbix_GUI -> install
     zabbix_gui_install:
       enabled: true
-      packages:
-        Debian: [zabbix-frontend-php]
-        RedHat: [zabbix-web-mysql]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-        RedHat: []
     # Zabbix_GUI -> config
     zabbix_gui_config:
       enabled: true
@@ -356,10 +350,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # PHP -> install
     php_install:
       enabled: true
-      packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
-        RedHat: []
+      modules: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
     # PHP -> config
     php_fpm:
       zabbix_conf:
@@ -404,10 +395,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # Nginx -> install
     nginx_install:
       enabled: true
-      packages: [nginx]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release, debian-archive-keyring]
-        RedHat: []
     # Nginx -> config -> nginx.conf
     nginx_conf:
       enabled: true
@@ -500,12 +487,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # Zabbix_GUI -> install
     zabbix_gui_install:
       enabled: true
-      packages:
-        Debian: [zabbix-frontend-php]
-        RedHat: [zabbix-web-mysql]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-        RedHat: []
     # Zabbix_GUI -> config
     zabbix_gui_config:
       enabled: true
@@ -544,10 +525,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # PHP -> install
     php_install:
       enabled: true
-      packages: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, curl, gnupg2, lsb-release]
-        RedHat: []
+      modules: [bcmath, ctype, common, fpm, cli, gd, ldap, curl, xml, xmlrpc, mbstring, mysql, zip]
     # PHP -> config
     php_fpm:
       zabbix_conf:
@@ -584,12 +562,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # Apache -> install
     apache_install:
       enabled: true
-      packages:
-        Debian: [apache2]
-        RedHat: [httpd]
-      dependencies:
-        Debian: []
-        RedHat: []
     # Apache -> config -> modules
     apache_modules:
       enabled: false
@@ -672,12 +644,6 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
     # Zabbix_GUI -> install
     zabbix_gui_install:
       enabled: true
-      packages:
-        Debian: [zabbix-frontend-php]
-        RedHat: [zabbix-web-mysql]
-      dependencies:
-        Debian: [apt-transport-https, ca-certificates, gnupg2, lsb-release]
-        RedHat: []
     # Zabbix_GUI -> config
     zabbix_gui_config:
       enabled: true
