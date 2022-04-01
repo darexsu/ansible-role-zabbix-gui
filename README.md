@@ -44,6 +44,18 @@ roles: [Nginx](https://github.com/darexsu/ansible-role-nginx), [Apache](https://
 
 Another Zabbix roles: [Zabbix-server](https://github.com/darexsu/ansible-role-zabbix-server/), [Zabbix-agent](https://github.com/darexsu/ansible-role-zabbix-agent/), [Zabbix-gui](https://github.com/darexsu/ansible-role-zabbix-gui/)
 
+### FAQ
+
+- Q: Playbooks (merge version)
+  - A: Some users prefer that variables that are hashes (aka ‘dictionaries’ in Python terms) are merged. This setting is called ‘merge’. You can use both version - see [merge behaviour](#merge-behaviour). Don't turn on "hash_behaviour" in ansible.cfg
+
+- Q: Easy way to deploy  Zabbix-gui. Ready for use
+  - A: Use playbook [install and configure: Zabbix-gui v6.0, PHP v7.4, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-full-version)
+
+- Q: What is about Selinux policy?
+  - A: Not configured.
+
+
 ### Merge behaviour
 
 Replace or Merge dictionaries (with "hash_behaviour=replace" in ansible.cfg):

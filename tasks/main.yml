@@ -31,7 +31,7 @@
 
 - name: "-> 02_Zabbix_GUI_config.yml"
   include_tasks: "./tasks/02_Zabbix_GUI_config.yml"
-  when: zabbix_gui_install['packages'][ansible_os_family][0] in ansible_facts.packages and zabbix_gui_config.enabled
+  when: zabbix_gui_const[ansible_os_family]['packages'][0] in ansible_facts.packages and zabbix_gui_config.enabled
 
 - name: include role php
   include_role:
