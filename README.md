@@ -9,13 +9,13 @@
       - [relative](#relative)
       - [merge behaviour](#merge-behaviour)
   - Playbooks (merge version):
-      - [install and configure: Zabbix-gui, PHP, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-merge-version)
-      - [install and configure: Zabbix-gui, PHP, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-merge-version)
+      - [install and configure: Zabbix-gui v6.0, PHP v7.4, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-merge-version)
+      - [install and configure: Zabbix-gui v6.0, PHP v7.4, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-merge-version)
         - [install: Zabbix-GUI](#install-zabbix-gui-merge-version)
         - [configure: zabbix.conf.php](#configure-zabbixconfphp-merge-version)
   - Playbooks (full version):
-      - [install and configure: Zabbix-gui, PHP, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-full-version)
-      - [install and configure: Zabbix-gui, PHP, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-full-version)
+      - [install and configure: Zabbix-gui v6.0, PHP v7.4, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-full-version)
+      - [install and configure: Zabbix-gui v6.0, PHP v7.4, FirewallD](#install-and-configure-zabbix-gui-php-apache-full-version)
         - [install: Zabbix-GUI](#install-zabbix-gui-full-version)
         - [configure: zabbix.conf.php](#configure-zabbixconfphp-full-version)  
 
