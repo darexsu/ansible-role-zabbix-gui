@@ -16,7 +16,7 @@
         - [configure: zabbix.conf.php](#configure-zabbixconfphp-merge-version)
   - Playbooks (full version):
       - [install and configure: Zabbix-gui v6.0, PHP v7.4, Nginx, FirewallD](#install-and-configure-zabbix-gui-php-nginx-full-version)
-      - [install and configure: Zabbix-gui v6.0, PHP v7.4, FirewallD](#install-and-configure-zabbix-gui-php-apache-full-version)
+      - [install and configure: Zabbix-gui v6.0, PHP v7.4, Apache, FirewallD](#install-and-configure-zabbix-gui-php-apache-full-version)
         - [install: Zabbix-GUI](#install-zabbix-gui-full-version)
         - [configure: zabbix.conf.php](#configure-zabbixconfphp-full-version)  
 
