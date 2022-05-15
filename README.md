@@ -458,7 +458,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 
     # FirewallD
     firewalld:
-      enabled: false
+      enabled: true
       service:
         enabled: true
         state: "started"
@@ -616,7 +616,7 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
 
     # FirewallD
     firewalld:
-      enabled: false
+      enabled: true
       service:
         enabled: true
         state: "started"
