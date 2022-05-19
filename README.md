@@ -581,12 +581,12 @@ Your vars [host_vars]  -->  default vars [current role] --> default vars [includ
       enabled: true
     # Apache -> config -> modules
     apache_modules:
-      enabled: false
+      enabled: true
       mods_enabled: [proxy, proxy_fcgi]
       mods_disabled: []
     # Apache -> config -> apache.conf
     apache_conf:
-      enabled: false
+      enabled: true
       file: "{{ apache_const[ansible_os_family]['conf_file'] }}"
       src: "{{ apache_const[ansible_os_family]['conf_src'] }}"
       backup: false
